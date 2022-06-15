@@ -1,0 +1,21 @@
+FROM ubuntu:20.04
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update
+RUN apt-get install -y build-essential git
+RUN apt-get install curl -y
+RUN apt-get install nodejs -y
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+RUN apt-get update
+RUN apt-get install yarn -y
+RUN git clone https://github.com/thelounge/thelounge.git
+RUN cd /thelounge \
+&& yarn install \
+&& NODE_ENV=production yarn build
+COPY config.js /root/.thelounge/config.js
+RUN echo " cd /thelounge && yarn start" >> ~/.bashrc
+
+#docker run -it client
+

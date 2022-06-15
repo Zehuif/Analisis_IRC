@@ -1,0 +1,10 @@
+FROM ubuntu:20.04
+
+
+RUN apt-get update
+RUN apt-get install -y build-essential git
+RUN apt-get install python3 -y
+RUN git clone https://github.com/jrosdahl/miniircd
+RUN echo "cd miniircd && ./miniircd --setuid root" >> ~/.bashrc
+
+#docker run -it -p 6667:6667 server
